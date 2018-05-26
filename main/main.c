@@ -3,6 +3,7 @@
 #include <string.h>
 #include <esp_system.h>
 #include "nvs.h"
+#include "esp_log.h"
 
 #include "u8g2.h"
 #include "u8g2_esp32_hal.h"
@@ -47,7 +48,7 @@ void app_main(){
     // Allocate space for the vault and see if a copy exists in NVS
     vault_t vault;
     if (E_FAILURE == vault_init(&vault)){
-        first_boot_menu(&vault);
+        first_boot_menu();
     }
     
     // Initialize Wireless
@@ -57,7 +58,7 @@ void app_main(){
     initialize_console();
 
     xTaskCreate(vault_task,
-            "VaultTask", 32000,
+            "VaultTask", 50000,
             (void *) &vault, 14,
             NULL);
     

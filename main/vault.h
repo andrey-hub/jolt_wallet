@@ -16,14 +16,13 @@ typedef struct vault_t{
 /* Add RPC command types here. If they are coin specific, it must be specified
  * between dummy commands "COIN_START" and "COIN_END". */
 typedef enum vault_rpc_type_t {
-    FACTORY_RESET = 0, // Wipe all NVS
-    SETTINGS_CHANGE, // Change a setting
-    BLUETOOTH_PAIR,
-    BLUETOOTH_UNPAIR,
+    SYSCORE_START = 0,
+    SYSCORE_END,
 
     NANO_START,
     NANO_BLOCK_SIGN, // Signs passed in block
     NANO_PUBLIC_KEY, // Derive public key at index
+    NANO_CONTACT_UPDATE, // Update stored contact
     NANO_END
 
 } vault_rpc_type_t;
@@ -42,12 +41,24 @@ typedef struct vault_rpc_t {
     QueueHandle_t response_queue;
     union{
         struct{
+            char *mnemonic;
+        } syscore_mnemonic_restore;
+        /* NANO START */
+        struct{
             struct nl_block_t block;
             uint32_t index;
         } nano_public_key;
         struct{
             struct nl_block_t block;
+            uint32_t index;
+            struct nl_block_t frontier;
         } nano_block_sign;
+        struct{
+            char *name;
+            uint8_t index;
+            uint8_t *public; // pointer to public key
+        } nano_contact_update;
+        /* NANO END */
     };
 } vault_rpc_t;
 
