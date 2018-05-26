@@ -12,6 +12,7 @@
 extern u8g2_t u8g2;
 extern QueueHandle_t vault_queue;
 extern QueueHandle_t input_queue;
+extern QueueHandle_t backend_queue;
 extern SemaphoreHandle_t disp_mutex;
 
 extern bool statusbar_draw_enable;

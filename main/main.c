@@ -22,11 +22,14 @@
 #include "wifi.h"
 #include "nano_lws.h"
 
+#include "console.h"
+
 
 // Definitions for variables in globals.h
 u8g2_t u8g2;
 QueueHandle_t input_queue;
 QueueHandle_t vault_queue;
+QueueHandle_t backend_queue;
 SemaphoreHandle_t disp_mutex;
 
 void app_main(){
@@ -49,11 +52,19 @@ void app_main(){
     
     // Initialize Wireless
     wifi_connect();
+    
+    // Initiate Console
+    initialize_console();
 
     xTaskCreate(vault_task,
             "VaultTask", 32000,
             (void *) &vault, 14,
             NULL);
+    
+    xTaskCreate(backend_task,
+                "BackendTask", 32000,
+                NULL, 11,
+                NULL);
 
     xTaskCreate(gui_task,
             "GuiTask", 32000,
