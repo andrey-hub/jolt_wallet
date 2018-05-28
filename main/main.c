@@ -32,7 +32,6 @@ volatile QueueHandle_t input_queue;
 volatile QueueHandle_t vault_queue;
 volatile SemaphoreHandle_t disp_mutex;
 QueueHandle_t backend_queue;
-QueueHandle_t backend_queue;
 
 void app_main(){
     // Setup Input Button Debouncing Code
